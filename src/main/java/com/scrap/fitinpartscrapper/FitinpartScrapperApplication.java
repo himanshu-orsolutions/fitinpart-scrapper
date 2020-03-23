@@ -1,159 +1,106 @@
 package com.scrap.fitinpartscrapper;
 
-import java.io.BufferedWriter;
-import java.io.FileWriter;
+import java.io.FileOutputStream;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-import com.scrap.fitinpartscrapper.collectors.ImageDownloader;
+import com.google.gson.GsonBuilder;
 import com.scrap.fitinpartscrapper.collectors.KeyCollector;
+import com.scrap.fitinpartscrapper.models.Container;
 import com.scrap.fitinpartscrapper.models.Option;
-import com.scrap.fitinpartscrapper.models.ProductInfo;
+import com.scrap.fitinpartscrapper.models.Product;
+import com.scrap.fitinpartscrapper.models.ProductURL;
 
 @SpringBootApplication
 public class FitinpartScrapperApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(FitinpartScrapperApplication.class, args);
-		
-		if (!Files.exists(Paths.get("images"))) {
+
+		try (FileOutputStream logFileOutputStream = new FileOutputStream("log.txt")) {
+			List<Product> products = new ArrayList<>();
 			try {
-				Files.createDirectory(Paths.get("images"));
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-		}
 
-		try (BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter("result.csv"))) {
-			bufferedWriter.write(
-					"\"car\",\"model\",\"year\",\"body\",\"engine\",\"engine_number\",\"category\",\"sub_category\",\"product_url\",product_name\",\"brand\",\"part_number\",\"image_url\",\"specifications\",\"parent_assembly\",\"description\",\"vehicles\",\"oe_numbers\",\"image_path\"");
-			bufferedWriter.newLine();
+				logFileOutputStream.write("Fetching Brands...\n".getBytes());
+				List<Option> brands = KeyCollector.getBrands();
+				logFileOutputStream.write("Brands fetched successfully. :)\n".getBytes());
 
-			System.out.println("Fetching Brands...");
-			List<Option> brands = KeyCollector.getBrands();
-			System.out.println("Brands fetched successfully. :)");
+				for (Option brand : brands) {
+					logFileOutputStream.write(("Fetching models for brand: " + brand.getName() + "\n").getBytes());
+					List<Option> models = KeyCollector.getModels(brand.getId());
+					logFileOutputStream.write("Models fetched successfully. :)\n".getBytes());
 
-			for (Option brand : brands) {
-				System.out.println("Fetching models for brand: " + brand.getName());
-				List<Option> models = KeyCollector.getModels(brand.getId());
-				System.out.println("Models fetched successfully. :)");
+					for (Option model : models) {
+						logFileOutputStream.write(("Fetching years for model: " + model.getName() + "\n").getBytes());
+						List<Option> years = KeyCollector.getYears(model.getId());
+						logFileOutputStream.write("Years fetched successfully. :)\n".getBytes());
 
-				for (Option model : models) {
-					System.out.println("Fetching years for model: " + model.getName());
-					List<Option> years = KeyCollector.getYears(model.getId());
-					System.out.println("Years fetched successfully. :)");
+						for (Option year : years) {
+							logFileOutputStream
+									.write(("Fetching bodies for model: " + model.getName() + "\n").getBytes());
+							List<Option> bodies = KeyCollector.getBodies(model.getId());
+							logFileOutputStream.write("Bodies fetched successfully. :)\n".getBytes());
 
-					for (Option year : years) {
-						System.out.println("Fetching bodies for model: " + model.getName());
-						List<Option> bodies = KeyCollector.getBodies(model.getId());
-						System.out.println("Bodies fetched successfully. :)");
+							for (Option body : bodies) {
+								logFileOutputStream.write(("Fetching engines for model: " + model.getName()
+										+ " and body: " + body.getName() + "\n").getBytes());
+								List<Option> engines = KeyCollector.getEngines(model.getId(), body.getId());
+								logFileOutputStream.write("Engines fetched successfully. :)\n".getBytes());
 
-						for (Option body : bodies) {
-							System.out.println(
-									"Fetching engines for model: " + model.getName() + " and body: " + body.getName());
-							List<Option> engines = KeyCollector.getEngines(model.getId(), body.getId());
-							System.out.println("Engines fetched successfully. :)");
+								for (Option engine : engines) {
+									logFileOutputStream.write(String
+											.format("Fetching engine types for model: %s, body: %s, and engine: %s\n",
+													model.getName(), body.getName(), engine.getName())
+											.getBytes());
+									List<Option> engineTypes = KeyCollector.getEngineTypes(model.getId(), body.getId(),
+											engine.getId());
+									logFileOutputStream.write("Engine types fetched successfully. :)\n".getBytes());
 
-							for (Option engine : engines) {
-								System.out.println(
-										String.format("Fetching engine types for model: %s, body: %s, and engine: %s",
-												model.getName(), body.getName(), engine.getName()));
-								List<Option> engineTypes = KeyCollector.getEngineTypes(model.getId(), body.getId(),
-										engine.getId());
-								System.out.println("Engine types fetched successfully. :)");
-
-								for (Option engineType : engineTypes) {
-									System.out.println(String.format(
-											"Fetching categories for model: %s, body: %s, engine: %s, and engine type: %s",
-											model.getName(), body.getName(), engine.getName(), engineType.getName()));
-									List<Option> categories = KeyCollector.getCategories(brand.getId(), model.getId(),
-											year.getId(), body.getId(), engine.getId(), engineType.getId());
-									System.out.println("Cetegories fetched successfully. :)");
-
-									for (Option category : categories) {
-										System.out.println(String.format(
-												"Fetching sub-categories for model: %s, body: %s, engine: %s, engine type: %s, and category: %s",
-												model.getName(), body.getName(), engine.getName(), engineType.getName(),
-												category.getName()));
-										List<Option> subCategories = KeyCollector.getSubCategories(brand.getId(),
+									for (Option engineType : engineTypes) {
+										logFileOutputStream.write(String.format(
+												"Fetching categories for model: %s, body: %s, engine: %s, and engine type: %s\n",
+												model.getName(), body.getName(), engine.getName(), engineType.getName())
+												.getBytes());
+										List<Option> categories = KeyCollector.getCategories(brand.getId(),
 												model.getId(), year.getId(), body.getId(), engine.getId(),
-												engineType.getId(), category.getId());
-										System.out.println("Sub-cetegories fetched successfully. :)");
+												engineType.getId());
+										logFileOutputStream.write("Cetegories fetched successfully. :)\n".getBytes());
 
-										for (Option subCategory : subCategories) {
-
-											System.out.println(String.format(
-													"Fetching product URLs for model: %s, body: %s, engine: %s, engine type: %s, category: %s, and sub-category: %s",
+										for (Option category : categories) {
+											logFileOutputStream.write(String.format(
+													"Fetching sub-categories for model: %s, body: %s, engine: %s, engine type: %s, and category: %s\n",
 													model.getName(), body.getName(), engine.getName(),
-													engineType.getName(), category.getName(), subCategory.getName()));
-											List<String> productURLs = KeyCollector.getProductsLinks(brand.getId(),
+													engineType.getName(), category.getName()).getBytes());
+											List<Option> subCategories = KeyCollector.getSubCategories(brand.getId(),
 													model.getId(), year.getId(), body.getId(), engine.getId(),
-													engineType.getId(), category.getId(), subCategory.getId());
-											System.out.println("Product URLs fetched successfully. :)");
+													engineType.getId(), category.getId());
+											logFileOutputStream
+													.write("Sub-cetegories fetched successfully. :)\n".getBytes());
 
-											for (String productURL : productURLs) {
-												System.out.println(
-														"Fetching the product information from URL: " + productURL);
-												try {
-													ProductInfo productInfo = KeyCollector.getProductInfo(productURL);
-													System.out.println("Information fetched successfully :)");
+											for (Option subCategory : subCategories) {
 
-													String imagePath = "images/"
-															+ StringUtils
-																	.join(Arrays.asList(year.getName(), brand.getName(),
-																			model.getName(), productInfo.getBrand(),
-																			productInfo.getPartNumber()), "-")
-															+ "." + productInfo.getImageURL().substring(
-																	productInfo.getImageURL().lastIndexOf(".") + 1);
+												logFileOutputStream.write(String.format(
+														"Fetching product URLs for model: %s, body: %s, engine: %s, engine type: %s, category: %s, and sub-category: %s\n",
+														model.getName(), body.getName(), engine.getName(),
+														engineType.getName(), category.getName(), subCategory.getName())
+														.getBytes());
+												List<String> urls = KeyCollector.getProductsLinks(brand.getId(),
+														model.getId(), year.getId(), body.getId(), engine.getId(),
+														engineType.getId(), category.getId(), subCategory.getId());
+												logFileOutputStream
+														.write("Product URLs fetched successfully. :)\n".getBytes());
 
-													bufferedWriter.write(StringUtils.join(Arrays.asList(
-															"\"" + brand.getName() + "\"",
-															"\"" + model.getName() + "\"", "\"" + year.getName() + "\"",
-															"\"" + body.getName() + "\"",
-															"\"" + engine.getName() + "\"",
-															"\"" + engineType.getName() + "\"",
-															"\"" + category.getName() + "\"",
-															"\"" + subCategory.getName() + "\"",
-															"\"" + productURL + "\"",
-															"\"" + productInfo.getName() + "\"",
-															"\"" + productInfo.getBrand() + "\"",
-															"\"" + productInfo.getPartNumber() + "\"",
-															"\"" + productInfo.getImageURL() + "\"",
-															"\"" + productInfo.getSpecifications() + "\"",
-															"\"" + productInfo.getParentAssembly() + "\"",
-															"\"" + productInfo.getDescription() + "\"",
-															"\"" + productInfo.getVehicles() + "\"",
-															"\"" + productInfo.getOeNumbers() + "\"",
-															"\"" + (StringUtils.isNotBlank(productInfo.getImageURL())
-																	? imagePath
-																	: "NA") + "\""),
-															","));
-													bufferedWriter.newLine();
+												List<ProductURL> productURLs = new ArrayList<>();
+												urls.forEach(url -> productURLs.add(new ProductURL(url, false)));
 
-													// Downloading the image
-													try {
-														if (StringUtils.isNotBlank(productInfo.getImageURL())) {
-															System.out
-																	.println("Downloading the product image from URL: "
-																			+ productInfo.getImageURL());
-															ImageDownloader.downloadImage(productInfo.getImageURL(),
-																	Paths.get(imagePath));
-														}
-													} catch (IOException ioException) {
-														System.out.println("Error downloading the image from URL: "
-																+ productInfo.getImageURL());
-													}
-												} catch (IOException ioException) {
-													System.out.println("Error getting information of product with URL: "
-															+ productURL);
-												}
+												products.add(new Product(brand.getName(), model.getName(),
+														year.getName(), body.getName(), engine.getName(),
+														engineType.getName(), category.getName(), subCategory.getName(),
+														productURLs));
 											}
 										}
 									}
@@ -162,9 +109,18 @@ public class FitinpartScrapperApplication {
 						}
 					}
 				}
+			} catch (IOException ioException) {
+				logFileOutputStream.write(ioException.getMessage().getBytes());
+			}
+
+			try (FileOutputStream outputStream = new FileOutputStream("products.json")) {
+				outputStream.write(
+						new GsonBuilder().setPrettyPrinting().create().toJson(new Container(products)).getBytes());
+				outputStream.flush();
+			} catch (IOException ioException) {
+				logFileOutputStream.write(ioException.getMessage().getBytes());
 			}
 		} catch (IOException ioException) {
-			System.out.println("Error getting the keys.");
 			ioException.printStackTrace();
 		}
 	}
