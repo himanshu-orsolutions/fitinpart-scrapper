@@ -14,8 +14,7 @@ public class Product {
 	private String subCategory;
 	private List<ProductURL> productURLs;
 
-	public Product(String brand, String model, String year, String body, String engine, String engineType,
-			String category, String subCategory, List<ProductURL> productURLs) {
+	public Product(String brand, String model, String year, String body, String engine, String engineType) {
 		super();
 		this.brand = brand;
 		this.model = model;
@@ -23,9 +22,6 @@ public class Product {
 		this.body = body;
 		this.engine = engine;
 		this.engineType = engineType;
-		this.category = category;
-		this.subCategory = subCategory;
-		this.productURLs = productURLs;
 	}
 
 	public String getBrand() {
