@@ -14,6 +14,7 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
+import org.springframework.stereotype.Service;
 
 import com.scrap.fitinpartscrapper.models.Option;
 
@@ -23,6 +24,7 @@ import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 
+@Service
 public class KeyCollector {
 
 	private KeyCollector() {
@@ -32,20 +34,20 @@ public class KeyCollector {
 	/**
 	 * The option regex
 	 */
-	private static final Pattern OPTION_REGEX = Pattern
+	private final Pattern OPTION_REGEX = Pattern
 			.compile("\\<option value\\=\\\\\\\"([\\w]+)\\\\\\\"\\>([^\\<\\\\\\/]+)\\<\\\\\\/option\\>");
 
 	/**
 	 * The maximum number of retries
 	 */
-	private static final Integer MAX_RETRIES = 3;
+	private final Integer MAX_RETRIES = 3;
 
 	/**
 	 * Gets the list of brands
 	 * 
 	 * @throws IOException
 	 */
-	public static List<Option> getBrands() throws IOException {
+	public List<Option> getBrands() throws IOException {
 
 		for (int i = 0; i < MAX_RETRIES; i++) {
 			try {
@@ -82,7 +84,7 @@ public class KeyCollector {
 	 * @return The list of models
 	 * @throws IOException
 	 */
-	public static List<Option> getModels(String brandId) throws IOException {
+	public List<Option> getModels(String brandId) throws IOException {
 
 		for (int i = 0; i < MAX_RETRIES; i++) {
 			try {
@@ -124,7 +126,7 @@ public class KeyCollector {
 	 * @return The list of years
 	 * @throws IOException
 	 */
-	public static List<Option> getYears(String modelId) throws IOException {
+	public List<Option> getYears(String modelId) throws IOException {
 
 		for (int i = 0; i < MAX_RETRIES; i++) {
 			try {
@@ -166,7 +168,7 @@ public class KeyCollector {
 	 * @return The list of bodies
 	 * @throws IOException
 	 */
-	public static List<Option> getBodies(String modelId) throws IOException {
+	public List<Option> getBodies(String modelId) throws IOException {
 
 		for (int i = 0; i < MAX_RETRIES; i++) {
 			try {
@@ -209,7 +211,7 @@ public class KeyCollector {
 	 * @return The list of engines
 	 * @throws IOException
 	 */
-	public static List<Option> getEngines(String modelId, String bodyId) throws IOException {
+	public List<Option> getEngines(String modelId, String bodyId) throws IOException {
 
 		for (int i = 0; i < MAX_RETRIES; i++) {
 			try {
@@ -253,7 +255,7 @@ public class KeyCollector {
 	 * @return The list of engine types
 	 * @throws IOException
 	 */
-	public static List<Option> getEngineTypes(String modelId, String bodyId, String engineId) throws IOException {
+	public List<Option> getEngineTypes(String modelId, String bodyId, String engineId) throws IOException {
 
 		for (int i = 0; i < MAX_RETRIES; i++) {
 			try {
@@ -301,8 +303,8 @@ public class KeyCollector {
 	 * @return The list of categories
 	 * @throws IOException
 	 */
-	public static List<Option> getCategories(String brandId, String modelId, String yearId, String bodyId,
-			String engineId, String engineTypeId) throws IOException {
+	public List<Option> getCategories(String brandId, String modelId, String yearId, String bodyId, String engineId,
+			String engineTypeId) throws IOException {
 
 		for (int i = 0; i < MAX_RETRIES; i++) {
 			try {
@@ -356,8 +358,8 @@ public class KeyCollector {
 	 * @return The list of categories
 	 * @throws IOException
 	 */
-	public static List<Option> getSubCategories(String brandId, String modelId, String yearId, String bodyId,
-			String engineId, String engineTypeId, String categoryId) throws IOException {
+	public List<Option> getSubCategories(String brandId, String modelId, String yearId, String bodyId, String engineId,
+			String engineTypeId, String categoryId) throws IOException {
 
 		for (int i = 0; i < MAX_RETRIES; i++) {
 			try {
@@ -416,8 +418,8 @@ public class KeyCollector {
 	 * @return The list of categories
 	 * @throws IOException
 	 */
-	public static List<String> getProductsLinks(String brandId, String modelId, String yearId, String bodyId,
-			String engineId, String engineTypeId, String categoryId, String subcategoryId) throws IOException {
+	public List<String> getProductsLinks(String brandId, String modelId, String yearId, String bodyId, String engineId,
+			String engineTypeId, String categoryId, String subcategoryId) throws IOException {
 
 		for (int i = 0; i < MAX_RETRIES; i++) {
 			try {
