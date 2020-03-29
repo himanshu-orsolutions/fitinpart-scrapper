@@ -18,12 +18,14 @@ import org.springframework.stereotype.Service;
 
 import com.scrap.fitinpartscrapper.models.Option;
 
+import lombok.extern.slf4j.Slf4j;
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 
+@Slf4j
 @Service
 public class KeyCollector {
 
@@ -71,7 +73,7 @@ public class KeyCollector {
 
 				return brands;
 			} catch (Exception exception) {
-				// do nothing here
+				log.debug("Error fetching the brands. Retrying...");
 			}
 		}
 		return Arrays.asList();
@@ -113,7 +115,7 @@ public class KeyCollector {
 
 				return models;
 			} catch (Exception exception) {
-				// do nothing here
+				log.debug("Error fetching the models. Retrying...");
 			}
 		}
 		return Arrays.asList();
@@ -155,7 +157,7 @@ public class KeyCollector {
 
 				return years;
 			} catch (Exception exception) {
-				// do nothing here
+				log.debug("Error fetching the years. Retrying...");
 			}
 		}
 		return Arrays.asList();
@@ -197,7 +199,7 @@ public class KeyCollector {
 
 				return bodies;
 			} catch (Exception exception) {
-				// do nothing here
+				log.debug("Error fetching the bodies. Retrying...");
 			}
 		}
 		return Arrays.asList();
@@ -240,7 +242,7 @@ public class KeyCollector {
 
 				return engines;
 			} catch (Exception exception) {
-				// do nothing here
+				log.debug("Error fetching the engines. Retrying...");
 			}
 		}
 		return Arrays.asList();
@@ -285,7 +287,7 @@ public class KeyCollector {
 
 				return engineTypes;
 			} catch (Exception exception) {
-				// do nothing here
+				log.debug("Error fetching the engine types. Retrying...");
 			}
 		}
 		return Arrays.asList();
@@ -339,7 +341,7 @@ public class KeyCollector {
 
 				return categories;
 			} catch (Exception exception) {
-				// do nothing here
+				log.debug("Error fetching the categories. Retrying...");
 			}
 		}
 		return Arrays.asList();
@@ -398,7 +400,7 @@ public class KeyCollector {
 
 				return subCategories;
 			} catch (Exception exception) {
-				// do nothing here
+				log.debug("Error fetching the sub-categories. Retrying...");
 			}
 		}
 		return Arrays.asList();
@@ -457,7 +459,7 @@ public class KeyCollector {
 
 				return links;
 			} catch (Exception exception) {
-				// do nothing here
+				log.debug("Error fetching the product links. Retrying...");
 			}
 		}
 		return Arrays.asList();

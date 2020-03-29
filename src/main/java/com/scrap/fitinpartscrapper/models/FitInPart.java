@@ -34,7 +34,11 @@ public class FitInPart {
 	@NotNull
 	@Column(name = "info")
 	private String info;
-
+	
+	@NotNull
+	@Column(name = "parameters")
+	private String parameters;
+	
 	@NotNull
 	@Enumerated(EnumType.STRING)
 	@Column(name = "tag")
