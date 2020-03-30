@@ -8,6 +8,9 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import com.scrap.fitinpartscrapper.services.FitInPartService;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 @SpringBootApplication
 public class FitinpartScrapperApplication {
 
@@ -16,6 +19,7 @@ public class FitinpartScrapperApplication {
 
 	@PostConstruct
 	public void initialize() {
+		log.debug("Initializing the DB with brands.");
 		fitInPartService.initializeFitInPartTable();
 	}
 

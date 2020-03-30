@@ -28,30 +28,18 @@ public class FitInPart {
 	@Column(name = "id")
 	private Long id;
 
-	@Column(name = "parent_id")
-	private Long parentId;
-
 	@NotNull
 	@Column(name = "info")
 	private String info;
-	
+
 	@NotNull
 	@Column(name = "parameters")
 	private String parameters;
-	
+
 	@NotNull
 	@Enumerated(EnumType.STRING)
 	@Column(name = "tag")
 	private FitInPartTag tag;
-
-	@Column(name = "next_url")
-	private String nextURL;
-
-	@Column(name = "http_method")
-	private String httpMethod;
-
-	@Column(name = "http_body")
-	private String httpBody;
 
 	@Column(name = "is_scrapped")
 	private Boolean isScrapped;

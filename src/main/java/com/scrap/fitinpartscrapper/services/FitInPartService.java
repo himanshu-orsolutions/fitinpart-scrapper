@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import com.google.gson.Gson;
 import com.scrap.fitinpartscrapper.collectors.KeyCollector;
 import com.scrap.fitinpartscrapper.models.FitInPart;
+import com.scrap.fitinpartscrapper.models.FitInPartInfo;
 import com.scrap.fitinpartscrapper.models.FitInPartTag;
 import com.scrap.fitinpartscrapper.models.Option;
 import com.scrap.fitinpartscrapper.models.Parameters;
@@ -39,12 +40,10 @@ public class FitInPartService {
 				List<Option> brands = keyCollector.getBrands();
 				if (!brands.isEmpty()) {
 					List<FitInPart> fitInParts = new ArrayList<>();
-					brands.forEach(brand -> fitInParts.add(FitInPart.builder().parentId(-1l).info(brand.getName())
+					brands.forEach(brand -> fitInParts.add(FitInPart.builder()
+							.info(new Gson().toJson(FitInPartInfo.builder().brandName(brand.getName()).build()))
 							.parameters(new Gson().toJson(Parameters.builder().brandId(brand.getId()).build()))
-							.tag(FitInPartTag.BRAND)
-							.nextURL("https://www.fitinpart.sg/index.php?route=module/appsearch/getModel")
-							.httpBody("class=0&brand=" + brand.getId() + "&veh_type=1").httpMethod("POST")
-							.isScrapped(false).build()));
+							.tag(FitInPartTag.BRAND).isScrapped(false).build()));
 
 					fitInPartRepository.saveAll(fitInParts);
 				} else {
@@ -54,5 +53,11 @@ public class FitInPartService {
 				log.error("Error fetching the brands. It has to be fixed at P1.", ioException);
 			}
 		}
+	}
+
+	@Transactional
+	public List<FitInPart> getPendingFitInParts() {
+
+		return this.fitInPartRepository.getPendingFitInParts();
 	}
 }
