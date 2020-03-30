@@ -1,6 +1,5 @@
 package com.scrap.fitinpartscrapper.services;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -36,21 +35,17 @@ public class FitInPartService {
 		log.debug("Checking is DB is already initialized or not...");
 		if (fitInPartRepository.count() == 0) {
 			log.debug("Initializing 'fitinpart' table with brands information...");
-			try {
-				List<Option> brands = keyCollector.getBrands();
-				if (!brands.isEmpty()) {
-					List<FitInPart> fitInParts = new ArrayList<>();
-					brands.forEach(brand -> fitInParts.add(FitInPart.builder()
-							.info(new Gson().toJson(FitInPartInfo.builder().brandName(brand.getName()).build()))
-							.parameters(new Gson().toJson(Parameters.builder().brandId(brand.getId()).build()))
-							.tag(FitInPartTag.BRAND).isScrapped(false).build()));
+			List<Option> brands = keyCollector.getBrands();
+			if (!brands.isEmpty()) {
+				List<FitInPart> fitInParts = new ArrayList<>();
+				brands.forEach(brand -> fitInParts.add(FitInPart.builder()
+						.info(new Gson().toJson(FitInPartInfo.builder().brandName(brand.getName()).build()))
+						.parameters(new Gson().toJson(Parameters.builder().brandId(brand.getId()).build()))
+						.tag(FitInPartTag.BRAND).isScrapped(false).build()));
 
-					fitInPartRepository.saveAll(fitInParts);
-				} else {
-					log.error("No brands found. Check the API calls before proceeding further.");
-				}
-			} catch (IOException ioException) {
-				log.error("Error fetching the brands. It has to be fixed at P1.", ioException);
+				fitInPartRepository.saveAll(fitInParts);
+			} else {
+				log.error("No brands found. Check the API calls before proceeding further.");
 			}
 		}
 	}
@@ -59,5 +54,14 @@ public class FitInPartService {
 	public List<FitInPart> getPendingFitInParts() {
 
 		return this.fitInPartRepository.getPendingFitInParts();
+	}
+
+	@Transactional
+	public void saveFitInParts(List<FitInPart> fitInParts, long parentFitInPartId) {
+
+		this.fitInPartRepository.saveAll(fitInParts);
+		FitInPart parentFitInPart = this.fitInPartRepository.findById(parentFitInPartId).get();
+		parentFitInPart.setIsScrapped(true);
+		this.fitInPartRepository.save(parentFitInPart);
 	}
 }

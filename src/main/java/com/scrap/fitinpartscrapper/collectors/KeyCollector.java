@@ -1,6 +1,5 @@
 package com.scrap.fitinpartscrapper.collectors;
 
-import java.io.IOException;
 import java.net.URLDecoder;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -46,10 +45,8 @@ public class KeyCollector {
 
 	/**
 	 * Gets the list of brands
-	 * 
-	 * @throws IOException
 	 */
-	public List<Option> getBrands() throws IOException {
+	public List<Option> getBrands() {
 
 		for (int i = 0; i < MAX_RETRIES; i++) {
 			try {
@@ -84,9 +81,8 @@ public class KeyCollector {
 	 * 
 	 * @param brandId The brand ID
 	 * @return The list of models
-	 * @throws IOException
 	 */
-	public List<Option> getModels(String brandId) throws IOException {
+	public List<Option> getModels(String brandId) {
 
 		for (int i = 0; i < MAX_RETRIES; i++) {
 			try {
@@ -126,9 +122,8 @@ public class KeyCollector {
 	 * 
 	 * @param modelId The model id
 	 * @return The list of years
-	 * @throws IOException
 	 */
-	public List<Option> getYears(String modelId) throws IOException {
+	public List<Option> getYears(String modelId) {
 
 		for (int i = 0; i < MAX_RETRIES; i++) {
 			try {
@@ -168,9 +163,8 @@ public class KeyCollector {
 	 * 
 	 * @param modelId The model id
 	 * @return The list of bodies
-	 * @throws IOException
 	 */
-	public List<Option> getBodies(String modelId) throws IOException {
+	public List<Option> getBodies(String modelId) {
 
 		for (int i = 0; i < MAX_RETRIES; i++) {
 			try {
@@ -211,9 +205,8 @@ public class KeyCollector {
 	 * @param modelId The model id
 	 * @param bodyId  the body id
 	 * @return The list of engines
-	 * @throws IOException
 	 */
-	public List<Option> getEngines(String modelId, String bodyId) throws IOException {
+	public List<Option> getEngines(String modelId, String bodyId) {
 
 		for (int i = 0; i < MAX_RETRIES; i++) {
 			try {
@@ -255,9 +248,8 @@ public class KeyCollector {
 	 * @param bodyName   The body id
 	 * @param engineName The engine id
 	 * @return The list of engine types
-	 * @throws IOException
 	 */
-	public List<Option> getEngineTypes(String modelId, String bodyId, String engineId) throws IOException {
+	public List<Option> getEngineTypes(String modelId, String bodyId, String engineId) {
 
 		for (int i = 0; i < MAX_RETRIES; i++) {
 			try {
@@ -303,10 +295,9 @@ public class KeyCollector {
 	 * @param engineId     The engine ID
 	 * @param engineTypeId The engine type ID
 	 * @return The list of categories
-	 * @throws IOException
 	 */
 	public List<Option> getCategories(String brandId, String modelId, String yearId, String bodyId, String engineId,
-			String engineTypeId) throws IOException {
+			String engineTypeId) {
 
 		for (int i = 0; i < MAX_RETRIES; i++) {
 			try {
@@ -358,10 +349,9 @@ public class KeyCollector {
 	 * @param engineTypeId The engine type ID
 	 * @param categoryId   The category ID
 	 * @return The list of categories
-	 * @throws IOException
 	 */
 	public List<Option> getSubCategories(String brandId, String modelId, String yearId, String bodyId, String engineId,
-			String engineTypeId, String categoryId) throws IOException {
+			String engineTypeId, String categoryId) {
 
 		for (int i = 0; i < MAX_RETRIES; i++) {
 			try {
@@ -418,10 +408,9 @@ public class KeyCollector {
 	 * @param categoryId    The category ID
 	 * @param subcategoryId The subcategory ID
 	 * @return The list of categories
-	 * @throws IOException
 	 */
 	public List<String> getProductsLinks(String brandId, String modelId, String yearId, String bodyId, String engineId,
-			String engineTypeId, String categoryId, String subcategoryId) throws IOException {
+			String engineTypeId, String categoryId, String subcategoryId) {
 
 		for (int i = 0; i < MAX_RETRIES; i++) {
 			try {

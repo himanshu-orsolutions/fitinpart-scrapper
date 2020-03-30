@@ -13,6 +13,7 @@ public class Parameters {
 
 	private String brandId;
 	private String modelId;
+	private String yearId;
 	private String bodyId;
 	private String engineId;
 	private String engineTypeId;

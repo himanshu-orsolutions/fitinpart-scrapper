@@ -13,6 +13,7 @@ public class FitInPartInfo {
 
 	private String brandName;
 	private String modelName;
+	private String yearName;
 	private String bodyName;
 	private String engineName;
 	private String engineTypeName;
