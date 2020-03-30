@@ -2,7 +2,6 @@ package com.scrap.fitinpartscrapper.collectors;
 
 import java.net.URLDecoder;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.concurrent.TimeUnit;
@@ -76,7 +75,7 @@ public class KeyCollector {
 				log.error("Error fetching the brands. Retrying...", exception);
 			}
 		}
-		return Arrays.asList();
+		return null;
 	}
 
 	/**
@@ -118,7 +117,7 @@ public class KeyCollector {
 				log.error("Error fetching the models. Retrying...", exception);
 			}
 		}
-		return Arrays.asList();
+		return null;
 	}
 
 	/**
@@ -160,7 +159,7 @@ public class KeyCollector {
 				log.error("Error fetching the years. Retrying...", exception);
 			}
 		}
-		return Arrays.asList();
+		return null;
 	}
 
 	/**
@@ -202,7 +201,7 @@ public class KeyCollector {
 				log.error("Error fetching the bodies. Retrying...", exception);
 			}
 		}
-		return Arrays.asList();
+		return null;
 	}
 
 	/**
@@ -245,7 +244,7 @@ public class KeyCollector {
 				log.error("Error fetching the engines. Retrying...", exception);
 			}
 		}
-		return Arrays.asList();
+		return null;
 	}
 
 	/**
@@ -290,7 +289,7 @@ public class KeyCollector {
 				log.error("Error fetching the engine types. Retrying...", exception);
 			}
 		}
-		return Arrays.asList();
+		return null;
 	}
 
 	/**
@@ -344,7 +343,7 @@ public class KeyCollector {
 				log.error("Error fetching the categories. Retrying...", exception);
 			}
 		}
-		return Arrays.asList();
+		return null;
 	}
 
 	/**
@@ -403,7 +402,7 @@ public class KeyCollector {
 				log.error("Error fetching the sub-categories. Retrying...", exception);
 			}
 		}
-		return Arrays.asList();
+		return null;
 	}
 
 	/**
@@ -462,6 +461,6 @@ public class KeyCollector {
 				log.error("Error fetching the product links. Retrying...", exception);
 			}
 		}
-		return Arrays.asList();
+		return null;
 	}
 }
