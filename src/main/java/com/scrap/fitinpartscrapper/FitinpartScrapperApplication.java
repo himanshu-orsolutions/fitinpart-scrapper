@@ -334,7 +334,8 @@ public class FitinpartScrapperApplication {
 			}
 
 			try {
-				Thread.sleep(10000l);
+				log.debug("Sleeping...");
+				Thread.sleep(15000l);
 			} catch (InterruptedException interruptedException) {
 				log.error("Error sleeping...", interruptedException);
 			}
