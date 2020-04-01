@@ -11,6 +11,6 @@ import com.scrap.fitinpartscrapper.models.FitInPart;
 @Repository
 public interface FitInPartRepository extends JpaRepository<FitInPart, Long> {
 
-	@Query(nativeQuery = true, value = "select * from fitinpart where is_scrapped=false and tag <> 'PRODUCT' limit 1000")
+	@Query(nativeQuery = true, value = "select * from fitinpart where is_scrapped=false and tag <> 'PRODUCT' limit 500")
 	List<FitInPart> getPendingFitInParts();
 }
