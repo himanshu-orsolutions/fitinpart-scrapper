@@ -51,8 +51,8 @@ public class KeyCollector {
 		for (int i = 0; i < MAX_RETRIES; i++) {
 			try {
 				List<Option> brands = new ArrayList<>();
-				OkHttpClient client = new OkHttpClient().newBuilder().connectTimeout(Long.MAX_VALUE, TimeUnit.SECONDS)
-						.readTimeout(Long.MAX_VALUE, TimeUnit.SECONDS).build();
+				OkHttpClient client = new OkHttpClient().newBuilder().connectTimeout(1000, TimeUnit.SECONDS)
+						.readTimeout(1000, TimeUnit.SECONDS).build();
 
 				Request request = new Request.Builder()
 						.url("https://www.fitinpart.sg/index.php?route=module/appsearch/getBrand")
@@ -89,8 +89,8 @@ public class KeyCollector {
 		for (int i = 0; i < MAX_RETRIES; i++) {
 			try {
 				List<Option> models = new ArrayList<>();
-				OkHttpClient client = new OkHttpClient().newBuilder().connectTimeout(Long.MAX_VALUE, TimeUnit.SECONDS)
-						.readTimeout(Long.MAX_VALUE, TimeUnit.SECONDS).build();
+				OkHttpClient client = new OkHttpClient().newBuilder().connectTimeout(1000, TimeUnit.SECONDS)
+						.readTimeout(1000, TimeUnit.SECONDS).build();
 
 				MediaType mediaType = MediaType.parse("application/x-www-form-urlencoded");
 				RequestBody body = RequestBody.create("class=0&brand=" + brandId + "&veh_type=1", mediaType);
@@ -131,8 +131,8 @@ public class KeyCollector {
 		for (int i = 0; i < MAX_RETRIES; i++) {
 			try {
 				List<Option> years = new ArrayList<>();
-				OkHttpClient client = new OkHttpClient().newBuilder().connectTimeout(Long.MAX_VALUE, TimeUnit.SECONDS)
-						.readTimeout(Long.MAX_VALUE, TimeUnit.SECONDS).build();
+				OkHttpClient client = new OkHttpClient().newBuilder().connectTimeout(1000, TimeUnit.SECONDS)
+						.readTimeout(1000, TimeUnit.SECONDS).build();
 
 				MediaType mediaType = MediaType.parse("application/x-www-form-urlencoded");
 				RequestBody body = RequestBody.create("model=" + modelId, mediaType);
@@ -173,8 +173,8 @@ public class KeyCollector {
 		for (int i = 0; i < MAX_RETRIES; i++) {
 			try {
 				List<Option> bodies = new ArrayList<>();
-				OkHttpClient client = new OkHttpClient().newBuilder().connectTimeout(Long.MAX_VALUE, TimeUnit.SECONDS)
-						.readTimeout(Long.MAX_VALUE, TimeUnit.SECONDS).build();
+				OkHttpClient client = new OkHttpClient().newBuilder().connectTimeout(1000, TimeUnit.SECONDS)
+						.readTimeout(1000, TimeUnit.SECONDS).build();
 
 				MediaType mediaType = MediaType.parse("application/x-www-form-urlencoded");
 				RequestBody body = RequestBody.create("model=" + modelId, mediaType);
@@ -216,8 +216,8 @@ public class KeyCollector {
 		for (int i = 0; i < MAX_RETRIES; i++) {
 			try {
 				List<Option> engines = new ArrayList<>();
-				OkHttpClient client = new OkHttpClient().newBuilder().connectTimeout(Long.MAX_VALUE, TimeUnit.SECONDS)
-						.readTimeout(Long.MAX_VALUE, TimeUnit.SECONDS).build();
+				OkHttpClient client = new OkHttpClient().newBuilder().connectTimeout(1000, TimeUnit.SECONDS)
+						.readTimeout(1000, TimeUnit.SECONDS).build();
 
 				MediaType mediaType = MediaType.parse("application/x-www-form-urlencoded");
 				RequestBody body = RequestBody.create("model=" + modelId + "&body=" + bodyId, mediaType);
@@ -260,8 +260,8 @@ public class KeyCollector {
 		for (int i = 0; i < MAX_RETRIES; i++) {
 			try {
 				List<Option> engineTypes = new ArrayList<>();
-				OkHttpClient client = new OkHttpClient().newBuilder().connectTimeout(Long.MAX_VALUE, TimeUnit.SECONDS)
-						.readTimeout(Long.MAX_VALUE, TimeUnit.SECONDS).build();
+				OkHttpClient client = new OkHttpClient().newBuilder().connectTimeout(1000, TimeUnit.SECONDS)
+						.readTimeout(1000, TimeUnit.SECONDS).build();
 
 				MediaType mediaType = MediaType.parse("application/x-www-form-urlencoded");
 				RequestBody body = RequestBody.create("model=" + modelId + "&body=" + bodyId + "&engine=" + engineId,
@@ -309,8 +309,8 @@ public class KeyCollector {
 		for (int i = 0; i < MAX_RETRIES; i++) {
 			try {
 				List<Option> categories = new ArrayList<>();
-				OkHttpClient client = new OkHttpClient().newBuilder().connectTimeout(Long.MAX_VALUE, TimeUnit.SECONDS)
-						.readTimeout(Long.MAX_VALUE, TimeUnit.SECONDS).build();
+				OkHttpClient client = new OkHttpClient().newBuilder().connectTimeout(1000, TimeUnit.SECONDS)
+						.readTimeout(1000, TimeUnit.SECONDS).build();
 				Request request = new Request.Builder()
 						.url("https://www.fitinpart.sg/index.php?route=product/category/appSearch&veh=1&b=" + brandId
 								+ "&m=" + modelId + "&y=" + yearId + "&b_v=" + bodyId + "&e_v=" + engineId + "&e_n="
@@ -364,8 +364,8 @@ public class KeyCollector {
 		for (int i = 0; i < MAX_RETRIES; i++) {
 			try {
 				List<Option> subCategories = new ArrayList<>();
-				OkHttpClient client = new OkHttpClient().newBuilder().connectTimeout(Long.MAX_VALUE, TimeUnit.SECONDS)
-						.readTimeout(Long.MAX_VALUE, TimeUnit.SECONDS).build();
+				OkHttpClient client = new OkHttpClient().newBuilder().connectTimeout(1000, TimeUnit.SECONDS)
+						.readTimeout(1000, TimeUnit.SECONDS).build();
 				Request request = new Request.Builder()
 						.url("https://www.fitinpart.sg/index.php?route=product/category/appSearch&veh=1&b=" + brandId
 								+ "&m=" + modelId + "&y=" + yearId + "&b_v=" + bodyId + "&e_v=" + engineId + "&e_n="
@@ -424,8 +424,8 @@ public class KeyCollector {
 		for (int i = 0; i < MAX_RETRIES; i++) {
 			try {
 				List<String> links = new ArrayList<>();
-				OkHttpClient client = new OkHttpClient().newBuilder().connectTimeout(Long.MAX_VALUE, TimeUnit.SECONDS)
-						.readTimeout(Long.MAX_VALUE, TimeUnit.SECONDS).build();
+				OkHttpClient client = new OkHttpClient().newBuilder().connectTimeout(1000, TimeUnit.SECONDS)
+						.readTimeout(1000, TimeUnit.SECONDS).build();
 				Request request = new Request.Builder()
 						.url("https://www.fitinpart.sg/index.php?route=product/category/appSearch&veh=1&b=" + brandId
 								+ "&m=" + modelId + "&y=" + yearId + "&b_v=" + bodyId + "&e_v=" + engineId + "&e_n="
