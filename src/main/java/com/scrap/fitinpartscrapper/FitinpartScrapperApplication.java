@@ -3,9 +3,12 @@ package com.scrap.fitinpartscrapper;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import javax.annotation.PostConstruct;
 
+import org.aspectj.apache.bcel.generic.IINC;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -30,6 +33,8 @@ public class FitinpartScrapperApplication {
 
 	@Autowired
 	private KeyCollector keyCollector;
+
+	private ExecutorService taskExecutor = Executors.newCachedThreadPool();
 
 	private void getModels(Parameters parameters, FitInPartInfo fitInPartInfo, Long parentFitInPartId) {
 
@@ -310,24 +315,29 @@ public class FitinpartScrapperApplication {
 				FitInPartInfo fitInPartInfo = new Gson().fromJson(fitinpart.getInfo(), FitInPartInfo.class);
 
 				if (tag.equals(FitInPartTag.BRAND)) {
-					getModels(parameters, fitInPartInfo, fitinpart.getId());
+					taskExecutor.execute(() -> getModels(parameters, fitInPartInfo, fitinpart.getId()));
 				} else if (tag.equals(FitInPartTag.MODEL)) {
-					getYears(parameters, fitInPartInfo, fitinpart.getId());
+					taskExecutor.execute(() -> getYears(parameters, fitInPartInfo, fitinpart.getId()));
 				} else if (tag.equals(FitInPartTag.YEAR)) {
-					getBodies(parameters, fitInPartInfo, fitinpart.getId());
+					taskExecutor.execute(() -> getBodies(parameters, fitInPartInfo, fitinpart.getId()));
 				} else if (tag.equals(FitInPartTag.BODY)) {
-					getEngines(parameters, fitInPartInfo, fitinpart.getId());
+					taskExecutor.execute(() -> getEngines(parameters, fitInPartInfo, fitinpart.getId()));
 				} else if (tag.equals(FitInPartTag.ENGINE)) {
-					getEngineTypes(parameters, fitInPartInfo, fitinpart.getId());
+					taskExecutor.execute(() -> getEngineTypes(parameters, fitInPartInfo, fitinpart.getId()));
 				} else if (tag.equals(FitInPartTag.ENGINE_TYPE)) {
-					getCategories(parameters, fitInPartInfo, fitinpart.getId());
+					taskExecutor.execute(() -> getCategories(parameters, fitInPartInfo, fitinpart.getId()));
 				} else if (tag.equals(FitInPartTag.CATEGORY)) {
-					getSubCategories(parameters, fitInPartInfo, fitinpart.getId());
+					taskExecutor.execute(() -> getSubCategories(parameters, fitInPartInfo, fitinpart.getId()));
 				} else if (tag.equals(FitInPartTag.SUB_CATEGORY)) {
-					getProductLinks(parameters, fitInPartInfo, fitinpart.getId());
+					taskExecutor.execute(() -> getProductLinks(parameters, fitInPartInfo, fitinpart.getId()));
 				}
 			}
 
+			try {
+				Thread.sleep(10000l);
+			} catch (InterruptedException interruptedException) {
+				log.error("Error sleeping...", interruptedException);
+			}
 			toScrap = this.fitInPartService.getPendingFitInParts();
 		}
 
